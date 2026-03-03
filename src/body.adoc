@@ -1,0 +1,39 @@
+[[body]]
+
+== Event Trace Features
+
+== Event Types
+
+=== Recommendations for Implementations
+
+=== Event Trace Non-function Events
+
+=== Event Trace Function Events
+
+=== Event Trace Watchpoint Events (hw triggers)
+
+=== Event Trace External Events (Asynchronous Events)
+
+=== Event Trace Performance Counter Events
+
+== Event Trace Profiling Performance Counters
+
+** Delta counters
+
+=== Delta counters based on hpmcounters
+
+=== Delta independent counters (not reliant on hpmcounters)
+
+** Mode - saturating vs wrap-around alert/trace message
+
+
+== Event Trace Control Registers
+
+== Event Trace N-Trace Messages
+
+== Event Trace E-Trace Messages
+
+=== Extensions to N-Trace General Messages (for all trace modes)
+
+** MTIME_SYNC
+
