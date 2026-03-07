@@ -39,8 +39,8 @@ endif
 SRC_DIR := src
 BUILD_DIR := build
 
-DOCS_PDF := $(DOCS:%.adoc=%.pdf)
-DOCS_HTML := $(DOCS:%.adoc=%.html)
+DOCS_PDF := $(addprefix $(BUILD_DIR)/,$(DOCS:%.adoc=%.pdf))
+DOCS_HTML := $(addprefix $(BUILD_DIR)/,$(DOCS:%.adoc=%.html))
 
 XTRA_ADOC_OPTS :=
 ASCIIDOCTOR_PDF := asciidoctor-pdf
@@ -54,27 +54,35 @@ OPTIONS := --trace \
            -a pdf-fontsdir=docs-resources/fonts \
            -a pdf-theme=docs-resources/themes/riscv-pdf.yml \
            $(XTRA_ADOC_OPTS) \
-		   -D build \
            --failure-level=ERROR
-		   -o $@ $<
 REQUIRES := --require=asciidoctor-bibtex \
             --require=asciidoctor-diagram \
-			--require=asciidoctor-lists \
+				--require=asciidoctor-lists \
             --require=asciidoctor-mathematical
 
-.PHONY: all build clean build-container build-no-container build-docs
+.PHONY: all build clean build-container build-no-container build-docs check-docs-resources
 
 all: build
 
-build-docs: $(DOCS_PDF) $(DOCS_HTML)
+build-docs: check-docs-resources $(DOCS_PDF) $(DOCS_HTML)
 
 vpath %.adoc $(SRC_DIR)
 
-%.pdf: %.adoc
-	$(DOCKER_CMD) $(DOCKER_QUOTE) $(ASCIIDOCTOR_PDF) $(OPTIONS) $(REQUIRES) $< $(DOCKER_QUOTE)
+check-docs-resources:
+	@test -f docs-resources/global-config.adoc || { \
+		echo "Missing docs-resources submodule content. Run: git submodule update --init --recursive"; \
+		exit 1; \
+	}
 
-%.html: %.adoc
-	$(DOCKER_CMD) $(DOCKER_QUOTE) $(ASCIIDOCTOR_HTML) $(OPTIONS) $(REQUIRES) $< $(DOCKER_QUOTE)
+$(BUILD_DIR)/.stamp:
+	mkdir -p $(BUILD_DIR)
+	touch $@
+
+$(BUILD_DIR)/%.pdf: %.adoc | $(BUILD_DIR)/.stamp
+	$(DOCKER_CMD) $(DOCKER_QUOTE) $(ASCIIDOCTOR_PDF) $(OPTIONS) $(REQUIRES) -D $(BUILD_DIR) -o $(@F) $< $(DOCKER_QUOTE)
+
+$(BUILD_DIR)/%.html: %.adoc | $(BUILD_DIR)/.stamp
+	$(DOCKER_CMD) $(DOCKER_QUOTE) $(ASCIIDOCTOR_HTML) $(OPTIONS) $(REQUIRES) -D $(BUILD_DIR) -o $(@F) $< $(DOCKER_QUOTE)
 
 build:
 	@echo "Checking if Docker is available..."
