@@ -1,6 +1,7 @@
 [[body]]
 
 == Event Trace Features
+
 * Extension of ratified RISC-V Instruction Trace as an additional encoder mode with additional message types
 
 * Based on same core hardware interface, now defined as RHTI (RISC-V Hart Trace Interface)
