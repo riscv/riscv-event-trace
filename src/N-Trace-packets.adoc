@@ -1,3 +1,5 @@
 [[N-Trace Packets]]
+
 == N-Trace Packets
+
 This file defines the N-Trace packets for Event Trace.
