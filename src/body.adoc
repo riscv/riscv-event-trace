@@ -29,7 +29,7 @@ A summary of the events types that can be traced with Event Trace is shown in th
 |===
 |Name |Description
 
-|Function *Calls, Returns*
+|*Function Calls, Returns*
 |Calls are categorized as Inferrable and Uninferrable types, specifically:
 itype = 8 (indirect call), 9 (direct call), 12 (co-routine swap), 13 (return)
 
@@ -39,14 +39,14 @@ itype = 8 (indirect call), 9 (direct call), 12 (co-routine swap), 13 (return)
 |*Interrupts*
 |Occurrence (itype=2) records PC of instruction that was interrupted, cause register, + exit address (itype=3 (trap return))
 
-|*ContextID*
-|Records s/hcontext reg when it is written to, plus privilege level and indication of s or h context
+|*Context*
+|Records s/hcontext register when it is written to, plus *privilege level* and indication of s or h context
 
 |*Debug trigger/watchpoints*
 |Records PC of instruction that hit the trigger, plus trigger ID and timestamp.  Triggers and their comparison conditions are optional; they can include instruction retired at a specific address or range of addresses, data address read or write or access, data value, privilege mode, scontext, or other trigger conditions.
 
 |*Periodic PC Sampling*
-|Programmable timer that generates a trace packet with the most recent retired PC and timestamp when it expires.  This allows for periodic sampling of the executing code to provide an execution profile over time.
+|Programmable timer that generates a trace packet with the most recent retired PC and timestamp when it expires.  This allows for periodic PC sampling of the executing code to provide an execution profile over time.
 
 |*External Events*
 |Edge-triggered signals that can insert a trace packet containing the closest retired PC at the time of the event, plus timestamp.  This enables tracing of external events such as interrupts, I/O events, DMA start-end markers, uncore signals, or user-selectable SoC-based events outside of core execution and to time correlate them *with* program execution.
@@ -65,7 +65,7 @@ If the (optional) Timestamp Unit is included in the Instruction Trace, then:
 
 * Timestamp can be turned off (for Instruction AND Event Trace) by clearing *trTsControl.trTsEnable* to save some trace bandwidth and storage.
 
-* The timestamp register can be reset by setting, then clearing *trTsControl.trTsReset*. This is recommended before starting a trace session since lower-values timestamps can benefit trace bandwidth and storage.
+* The timestamp register can be reset by setting, then clearing *trTsControl.trTsReset*. This is recommended before starting a trace session since lower-values timestamps can benefit trace bandwidth and storage, because of leading-zero suppression.
 
 It is highly recommended that the timestamp clock run at or a close ratio to cpu clock in order to accurately time short functions and point-to-point events such as hardware triggers.
 
@@ -85,7 +85,7 @@ U-ADDR means unique address, or a compressed address that the trace decode can c
 |===
 |Event |EVTPC |EVTDATA |ITYPE |Description
 
-|Sync Enable
+|*Sync Enable*
 |PC
 |SYNC
 |X
@@ -96,7 +96,7 @@ Causes for Sync Enable: +
 * Exit from debug. PC=first instruction to execute after debug mode. +
 * Event trace enable. PC=instruction responsible for trace-on.
 
-|Sync Disable
+|*Sync Disable*
 |PC
 |EVCODE
 |X
@@ -107,19 +107,19 @@ Causes for Sync Disable: +
 * Event trace disabled. PC=instruction responsible for trace-off. +
 * Enter-reset. PC=last instruction to execute before reset. +
 
-|Exception
+|*Exception*
 |PC
 |cause
 |1
 |PC is what is loaded into xepc (the address of the instruction that caused the exception), *cause* is what is loaded into the Exception Code field of xcause. cause signals are defined in Table 1 of RHTI spec (see References).
 
-|Interrupt
+|*Interrupt*
 |PC
 |cause
 |2
 |PC is loaded into xepc, *cause* is what is loaded into the Exception Code field of xcause.
 
-|Return from trap
+|*Return from trap*
 |PC
 |PCdest
 |3
@@ -127,9 +127,9 @@ Causes for Sync Disable: +
 (to distinguish from normal function return)
 PC and PCdest are both generated when they are not filtered by a privilege mode filter.
 
-|Return from trap
+|*Return from trap*
+|------
 |PCdest
-|---
 |3
 |(Variant of above) Return from exception or interrupt (MRET or SRET).
 Generated when the source PC is filtered by privilege mode (but PCdest is not).
@@ -144,44 +144,44 @@ The following table lists the message types to support function Calls and Return
 |===
 |Name |Source |Destination |ITYPE |Description
 
-|CALL_SYNC
+|*CALL_SYNC*
 |PC (F-ADDR)
 |dest (U-ADDR)
 |8 or 9
 |Traces both src and dest addresses. The second address can be compressed. Full (absolute) timestamp (if TS enabled).
 
-|CALL_FULL
+|*CALL_FULL*
 |PC (U-ADDR)
 |dest (U-ADDR)
 |8 or 9
 |Traces both src and dest compressed (unique) addrs; relative timestamp (if TS enabled).
 
-|CALL_DEST
-|-----
+|*CALL_DEST*
+|------
 |dest (U-ADDR)
 |8
 |itype=8 means indirect (uninferrable) call or co-routine swap.
 Source function can be derived from trace history however src address (i.e. line # of caller) is unknown.
 
-|CALL_PC
+|*CALL_PC*
 |PC (U-ADDR)
-|-----
+|------
 |9
 |inferrable call so dest obtained from opcode if binary available
 
-|RET_FULL
+|*RET_FULL*
 |PC (U-ADDR)
 |dest (U-ADDR)
 |13
 |Traces both src and dest (return to) addresses
 
-|RET_DEST
-|
+|*RET_DEST*
+|------
 |dest (U-ADDR)
 |13
 |return-to address; caller (function) determined from symbolic address range of destination address and/or from history.
 
-|RET
+|*RET*
 |------
 |------
 |13
@@ -190,14 +190,14 @@ Source function can be derived from trace history however src address (i.e. line
 
 If Calls/Returns are supported, Event Trace requires implementation of CALL_SYNC, CALL_FULL, and RET_FULL.  CALL_DEST and CALL_PC are useful for reducing bandwidth.  RET_DEST and RET are also useful for reducing bandwidth.
 
-=== Event Trace ContextID + Privilege Level Events
+=== Event Trace Context + Privilege Level Events
 Instruction Trace already has the capability to trace changes in context ID and privilege level. Event Trace will utilize the same message type to trace these events - either N-Trace or E-Trace.
 
-*ORing* of controls for enabling ContextID and Privilege level
+*ORing* of controls for enabling Context and Privilege level
 
-* Set *trTeEventControl.trTeContext* to enable tracing of ContextID changes, or
+* Set *trTeControl.trTeContext* of Instruction Trace to enable tracing of Context changes, or
 
-* Set Event Trace ContextID enable control bit
+* Set Event Trace Context enable control bit
 
 === Event Trace Trigger/Watchpoint Events
 
@@ -215,11 +215,11 @@ Recommended:
 
 This triggerID will be included in the trace message to identify which trigger/watchpoint caused the trace event.
 
-=== Event Trace Periodic Sampling Events
+=== Event Trace Periodic Events
 
-For a periodic sampling event type, a programmable timer runs until it expires which generates a trace packet with the most recent retired PC and timestamp.  This allows for periodic sampling of the executing code to provide an execution profile over time.  Note that with the inclusion of performance counters, this provides details of program conditions accumulated at the sample addresses.
+For a periodic PC sampling event type, a programmable timer runs until it expires which generates a trace packet with the most recent retired PC and timestamp.  This allows for periodic PC sampling of the executing code to provide an execution profile over time.  Note that with the inclusion of performance counters, this provides details of program conditions accumulated at the sample addresses.
 
-Instruction Trace provides a counter for implementing periodic sampling.  *trTeControl.trTeInstSyncMode* defines what is counting.  The value of 2 means count *hart clock cycles*.
+Instruction Trace provides a counter for implementing periodic PC sampling.  *trTeControl.trTeInstSyncMode* defines what is counting.  The value of 2 means count *hart clock cycles*.
 
 *trTeControl.trTeInstSyncMax* is a 4-bit wide field that defines the interval of powers-of-2 counts and is defined as: **2^(trTeInstSyncMax+4)**. Thus, the count interval ranges from 16 to 524,288.  At 1GHz clock cycle the time duration is +
 
@@ -230,9 +230,9 @@ Instruction Trace provides a counter for implementing periodic sampling.  *trTeC
 
 The smaller values would overrun the trace bandwidth thus they should not be programmed, or software should limit the acceptable values to higher numbers.
 
-Alternatively, Event Trace can provide its own counter for periodic sampling. A more practical range is one that shifts the binary count to a range from 2^8 to 2^23, or 256 counts to 8 million counts, i.e. **2^(trEvInstSyncMax+8)**. This would provide a range of 256 cycles (256ns at 1GHz) to 8 million cycles (8ms at 1GHz) which is more practical for sampling code execution.
+*Alternative.* Event Trace can provide its own counter for periodic PC sampling. A more practical range is one that shifts the binary count to a range from 2^8 to 2^23, or 256 counts to 8 million counts, i.e. **2^(trEvInstSyncMax+8)**. This would provide a range of 256 cycles (256ns at 1GHz) to 8 million cycles (8ms at 1GHz) which is more practical for sampling code execution.
 
-*Randomizing sampling*. To avoid aliasing of the periodic sampling with a repeating code execution pattern, hardware can randomize the sampling interval by including a least-significant N digits of a pseudo-random number that is changed on every interval completion.  A simple implementation is to use a linear feedback shift register (LFSR) to generate a pseudo-random number and then include the least-significant N bits of this number in the counter countdown value.
+*Randomizing PC sampling*. To avoid aliasing of the periodic PC sampling with a repeating code execution pattern, hardware can randomize the sampling interval by including a least-significant N digits of a pseudo-random number that is changed on every interval completion.  A simple implementation is to use a linear feedback shift register (LFSR) to generate a pseudo-random number and then factor the least-significant N bits of this number into the counter countdown value.
 
 The number of randomizing bits can either be fixed or users-selectable. Recommended is 4 bits.
 
@@ -283,14 +283,15 @@ The width of the timer lock-out counter is user selectable.  Recommended is a wi
 
 == Event Trace Profiling Performance Counters (PPCs)
 
-* PPCs are defined in Event Trace as delta counters, counters that are recorded at the time of an event then reset to zero. This is a requirement to keep the values smaller to reduce trace bandwidth and storage.  Post-processing of the trace data can reconstruct event counts across multiple event sequences such as inclusive function call-return counts.e full count values over time by accumulating the deltas.
+* PPCs are defined in Event Trace as delta counters, counters that are recorded at the time of an event, simultaneously reset to zero, then begin counting again. This is a requirement to keep the counter values smaller to reduce trace bandwidth and storage.  Post-processing of the trace data can reconstruct event counts across multiple event sequences to provide accumulated totals.  An example would be inclusive function call-return counts, where snippets of code execute in a function then more counts for functions that it calls.  "Self" or "exclusive" counts, i.e. only counts attributed to the code of the function itself would only accumulate counts from calls to other functions and from returns to calls of other functions. 
 
+Two mechanisms for implementing delta counters are:
 
-=== Delta counters based on hpmcounters
+=== Alternative 1: Delta counters based on hpmcounters
 
-=== Delta counters based on independent (Event Trace) counters, not reliant on hpmcounters
+=== Alternative 2: Delta counters based on independent (Event Trace) counters, not reliant on hpmcounters
 
-** Mode - saturating vs wrap-around alert/trace message
+//** Modes - saturating vs wrap-around alert/trace message
 
 == Tracing Modes
 
@@ -307,35 +308,39 @@ The width of the timer lock-out counter is user selectable.  Recommended is a wi
 
 == Event Trace Event Filters
 
-=== Leaf Function Filtering
+
 
 
 
 === Existing Instruction Trace Filters Applicable to Event Trace
 
-* contextID
+* Context
 
 * privilege level
-
 
 === Event Trace-specific Hardware Filters
 
 ==== Exception Cause Register filtering
 
-==== Interrupt Cause Regsiter filtering
+==== Interrupt Cause Register filtering
 
+=== Leaf Function Filtering
 
 == Event Trace Control Registers
 
 //read-only fields that define implementation features
 //use hpmcounters for PPRs
-== Extensions to N-Trace General Messages (for all trace modes)
-Located in the file Trace-Control-Extensions.adoc
 
-== Event Trace N-Trace Messages
-Located in the file N-Trace-packets.adoc
 
-== Event Trace E-Trace Messages
-Located in the file E-Trace-packets.adoc
+
+
+//== Extensions to N-Trace General Messages (for all trace modes)
+//Located in the file Trace-Control-Extensions.adoc
+
+//== Event Trace N-Trace Messages
+//Located in the file N-Trace-packets.adoc
+
+//== Event Trace E-Trace Messages
+//Located in the file E-Trace-packets.adoc
 
 
