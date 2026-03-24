@@ -2,4 +2,33 @@
 
 == N-Trace Packets
 
-This file defines the N-Trace packets for Event Trace.
+This file (n-Trace-packets.adoc) defines the N-Trace packets for Event Trace.
+
+
+=== Time Synchronization Packet for recording mtime & timestamp
+
+N-Trace MTIME_SYNC Message to record mtime and trace timestamp simultaneously for Timing Synchronization.
+
+.N-Trace MTIME_SYNC Message for Timing Synchronization
+[cols="1,1,9", width=80%, options="header"]
+|===
+|Bits |Field |Description
+
+|*6*
+|*TCODE*
+|*Value = 0x0F (15)*
+
+|Cfg
+|SRC
+|Source Hart of this message (width is trTeSrcBits)
+
+|Var
+|mtime
+|F (Full) mtime value (64b w leading zero suppression)
+
+|Var
+|TSTAMP
+|F (Full) timestamp value (64b w leading zero suppression)
+|===
+
+
