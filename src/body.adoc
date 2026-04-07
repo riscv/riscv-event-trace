@@ -465,7 +465,7 @@ Note that several of the registers are "shared" with Ecause filtering, thus the 
 |    [31:0] bit mask; set bit(s) to 1 to match encoded values 0 to 31 of Interrupt cause
 |*trTeFilteriMatchEcauseHigh*
 |  *.trTeFilterMatchChoiceEcauseHigh*
-|    [63:32] bit mask; set bit(s) to 1 to match encoded values 32 to 63 of Interrupt cause |
+|    [63:32] bit mask; set bit(s) to 1 to match encoded values 32 to 63 of Interrupt cause
 |===
 
 The (encoded) Interrupt cause values (from the RISC-V Instruction Set Manual: Vol II) are located in Table 16 - mcause, Table 37 - scause, and Table 50 when the hypervisor extension is implemented.
