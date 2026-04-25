@@ -15,7 +15,7 @@
 DOCS := \
 	riscv-event-trace.adoc
 
-DATE ?= $(shell date +%Y-%m-%d)
+DATE ?= $(shell date -u +%Y-%m-%d)
 VERSION ?= v0.0.0
 REVMARK ?= Draft
 DOCKER_IMG := ghcr.io/riscv/riscv-docs-base-container-image:latest
@@ -47,7 +47,6 @@ ASCIIDOCTOR_PDF := asciidoctor-pdf
 ASCIIDOCTOR_HTML := asciidoctor
 OPTIONS := --trace \
            -a compress \
-           -a mathematical-format=svg \
            -a revnumber=${VERSION} \
            -a revremark=${REVMARK} \
            -a revdate=${DATE} \
@@ -57,8 +56,7 @@ OPTIONS := --trace \
            --failure-level=ERROR
 REQUIRES := --require=asciidoctor-bibtex \
             --require=asciidoctor-diagram \
-				--require=asciidoctor-lists \
-            --require=asciidoctor-mathematical
+				--require=asciidoctor-lists
 
 .PHONY: all build clean build-container build-no-container build-docs check-docs-resources pdf html
 
