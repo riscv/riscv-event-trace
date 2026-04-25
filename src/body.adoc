@@ -1,4 +1,4 @@
-//4-24-26 7:21pm
+//4-25-26 4:25am
 
 [[body]]
 
@@ -577,6 +577,7 @@ Sets the number of PPCs output with each Event Type enabled.
 
 ==== trTeEvtControl: Event Trace Control Register (trTeBase+0x100)
 
+////
 .Event Trace Control Register *trTeEvtControl* (32b)
 [%unbreakable]
 [wavedrom, , svg]
@@ -605,7 +606,7 @@ Sets the number of PPCs output with each Event Type enabled.
   {bits: 3, name:'Reserved',},
 ], config:{lanes: 8, hspace:1024}}
 ....
-
+////
 .Event Trace Control Register fields for *trTeEvtControl* (32b)
 [cols="1,1,6,1,1", options="header"]
 |===
