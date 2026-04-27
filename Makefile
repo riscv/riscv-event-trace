@@ -82,6 +82,7 @@ $(BUILD_DIR)/.stamp:
 	touch $@
 
 $(BUILD_DIR)/%.pdf: %.adoc | $(BUILD_DIR)/.stamp
+	@set -x; \
 	$(DOCKER_CMD) $(DOCKER_QUOTE) $(ASCIIDOCTOR_PDF) $(OPTIONS) $(REQUIRES) -D $(BUILD_DIR) -o $(@F) $< $(DOCKER_QUOTE)
 
 $(BUILD_DIR)/%.html: %.adoc | $(BUILD_DIR)/.stamp
