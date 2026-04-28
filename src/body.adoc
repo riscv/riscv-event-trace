@@ -1090,7 +1090,6 @@ NOTE: These fields are WARL; the value of the field is always 0 if the feature i
 This field controls all signal lockouts.
 |RW
 |0
-|
 
 |===
 
