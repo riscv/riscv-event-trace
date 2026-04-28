@@ -1087,7 +1087,7 @@ NOTE: These fields are WARL; the value of the field is always 0 if the feature i
 |trTeEvtExtSigCountLockout
 |0-255: A "one-shot" duration lockout of subsequent edges of the external signal.  The first edge (user selectable) fires off the cycle countdown. While the counter is counting down, subsequent edges of the same external signal are ignored. This is to prevent the trace FIFO from filling up with events from the rapid transitions of the external signal. +
 0: no lockout; 1-255: number of cycles for lockout duration. +
-This value controls all signal lockouts.
+This field controls all signal lockouts.
 |RW
 |0
 |
