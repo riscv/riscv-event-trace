@@ -30,5 +30,3 @@ N-Trace MTIME_SYNC Message to record mtime and trace timestamp simultaneously fo
 |TSTAMP
 |F (Full) timestamp value (64b w leading zero suppression)
 |===
-
-
