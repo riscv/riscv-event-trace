@@ -1,7 +1,7 @@
-//5-4-26 5:12am
+//5-4-26 12:00pm
 
-[[body]]
 == Event Trace Features
+[[body]]
 
 * Extension of ratified RISC-V Instruction Trace as an additional encoder mode with additional message types
 
@@ -81,8 +81,6 @@ Event Trace can include the option of Profiling Performance Counters (PPCs) whic
 All Event Trace features are optional, however, the minimal set of event types recommended are: call/returns, interrupts, exceptions and context ID + privilege level.
 
 .Event Trace Feature Matrix
-[cols="40%,60%", options="header"]
-//[%autowidth,align="left",float="left",options="header"]
 [%autowidth, options="header"]
 |===
 |Feature |Recommended
@@ -117,7 +115,7 @@ All Event Trace features are optional, however, the minimal set of event types r
 NOTE: *F-ADDR* means full or uncompressed address. *C-ADDR* means compressed address which the trace decoder converts into a full address from a previous message, starting from a sync message that includes a full address. A C-ADDR, for N-Trace, is called a U-ADDR (U=unique) which is generated with "previous PC XOR current PC" to compress.  For E-Trace, compressed addresses (or delta address mode) are referred to as a differential encoding which is hardware logic that does "previous address - current address".
 
 .Event Trace Message Fields for non-function events
-[cols="2,1,1,1,7", options="header"]
+[%autowidth, options="header"]
 |===
 |Event |EVTPC |EVTDATA |ITYPE |Description
 
@@ -176,7 +174,7 @@ Generated when the source PC is filtered by privilege mode (but PCdest which is 
 The following table lists the message types to support function Calls and Returns, with different types and numbers of parameters.
 
 .Event Trace Message Types for Calls and Returns
-[cols="2,2,2,1,7", options="header"]
+[%autowidth, options="header"]
 |===
 |Name |Source |Destination |ITYPE |Description
 
@@ -394,7 +392,8 @@ Below, the 'i' in trTeFilter**i**Control (and others) is reference to the index 
 === Privilege Level Filtering Requirements
 
 .Privilege Level Filtering Registers
-[cols="1,1,2", options="header"]
+//[cols="1,1,2", options="header"]
+[%autowidth,options="header"]
 |===
 |Register |Register Fields |Description
 |*trTeFilteriControl*
@@ -449,7 +448,8 @@ Below, the 'i' in trTeFilter**i**Control (and others) is reference to the index 
 Table of (encoded) Exception cause values (from RISC-V Instruction Set Manual: Vol II).
 
 .Exception cause values
-[cols="1,2,2,2,1,2,2,2", options="header"]
+//[cols="4%,12%,12%,12%,4%,12%,12%,12%", options="header"]
+[%autowidth,options="header"]
 |===
 |Value |m-cause |s-cause |vs-mode |Value |m-cause |s-cause |vs-mode
 |0 |Instruction address misaligned|Instruction address misaligned |Instruction address misaligned |13 |Load page fault |Load page fault |Load page fault
@@ -494,7 +494,31 @@ Note that several of the registers are "shared" with Ecause filtering, thus the 
 |    [63:32] bit mask; set bit(s) to 1 to match encoded values 32 to 63 of Interrupt cause
 |===
 
-The (encoded) Interrupt cause values (from the RISC-V Instruction Set Manual: Vol II) are located in Table 16 - mcause, Table 37 - scause, and Table 50 when the hypervisor extension is implemented.
+The (encoded) Interrupt cause values (from the RISC-V Instruction Set Manual: Vol II) are located in Table 16 - mcause, Table 37 - scause, and Table 50 when the hypervisor extension is implemented.  Below is Table 50:
+
+//[cols="35%,60%", width=50%, options="header"]
+[%autowidth,options="header"]
+|===
+|Exception Code | Description
+|0 |Reserved
+|1 |Supervisor software interrupt
+|2 |Virtual supervisor software interrupt
+|3 |Machine software interrupt
+|4 |Reserved
+|5 |Supervisor timer interrupt
+|6 |Virtual supervisor timer interrupt
+|7 |Machine timer interrupt
+|8 |Reserved
+|9 |Supervisor external interrupt
+|10 |Virtual supervisor external interrupt
+|11 |Machine external interrupt
+|12 |Supervisor guest external interrupt
+|13 |Counter-overflow interrupt
+|14-15 |Reserved
+|≥16 |Designated for platform use
+|===
+
+
 
 === Context ID Filtering Requirements
 To enable Event Trace on matching a single Context ID write value and disable Event Trace on a non-match write to Context ID requires the Table setup below.
@@ -502,7 +526,7 @@ To enable Event Trace on matching a single Context ID write value and disable Ev
 For *trTeCompjControl* and *trTeCompjMatchLow* below, j=0 which defines the first comparator.  If the developer wants to support multiple Context ID matches, then j=1,2,... defines additional comparators.
 
 .Context ID Filtering
-[cols="1,1,2", options="header"]
+[%autowidth,options="header"]
 |===
 |Register | Register Fields |Description
 |*trTeComp0Control*
@@ -546,7 +570,7 @@ Event Trace as a trace mode (separate from Instruction Trace) is set by software
 Event Trace register starting point is an offset from the Trace Encoder base address. The Event Trace allocates and uses addresses *0x100-0x1FF*. Thus trTeEvtBase = trBaseEncoder+0x100. In the table below, the Offset is from the trTeEvtBase.
 
 .Event Trace Control Registers (Summary)
-[cols="2,1,7", width="90%", options="header"]
+[%autowidth,options="header"]
 |===
 |Name |Offset |Description
 
@@ -589,6 +613,7 @@ Sets the number of PPCs output with each Event Type enabled.
 
 ==== trTeEvtControl: Event Trace Control Register (trBaseEncoder+0x100)
 
+////
 .Event Trace Control Register *trTeEvtControl* (32b)
 [%unbreakable]
 [wavedrom, , svg]
@@ -610,15 +635,17 @@ Sets the number of PPCs output with each Event Type enabled.
   {bits: 1, name:'trTeEvtPCSampEn',},
   {bits: 1, name:'trTeEvtPCSampRandEn',},
   {bits: 1, name:'trTeEvtExtTrigEn',},
-  {bits: 1, name:'trTeEvtPerfCounterSelectorEn',},
+  {bits: 1, name:'trTeEvtPerfCtrSelEn',},
   {bits: 5, name:'Reserved',},
   {bits: 4, name:'trTeEvtSampDuration',},
   {bits: 4, name:'RESERVED',},
 ], config:{lanes: 8, hspace:1024}}
 ....
+////
 
 .Event Trace Control Register fields for *trTeEvtControl* (32b)
-[cols="1,2,5,1,1", options="header"]
+//[cols="5%,10%,~,5%,5%", options="header"]
+[%autowidth,options="header"]
 |===
 ^|Bit(s) ^|Field ^|Description ^|RW ^|Reset
 |0
@@ -661,10 +688,10 @@ Note that a change in value will generate a trace-on or trace-off EVT message pa
 |0
 
 |7
-|Reserved
+|RESERVED
 |
 |
-|undef
+|
 
 |8
 |trTeEvtExceptionEn
@@ -728,7 +755,7 @@ Note: Context writes are also enabled when the *trTeControl.trTeContext* bit is 
 |0
 
 |18
-|trTeEvtPerfCounterSelectorEn
+|trTeEvtPerfCtrSelEn
 |0: don't trace; 1: enable the tracing of performance counter selector outputs. The user first programs the hpmeventX registers that generate the outputs to trace. 
 |RW
 |0
@@ -737,7 +764,7 @@ Note: Context writes are also enabled when the *trTeControl.trTeContext* bit is 
 |Reserved
 |Reserved for future Event Type enables
 |
-|undef
+|
 
 
 |27:24
@@ -750,13 +777,14 @@ Note: Context writes are also enabled when the *trTeControl.trTeContext* bit is 
 |Reserved
 |
 |
-|undef
+|
 |===
 
 NOTE: For the setup of *trTeEvtExceptionEn* and *trTeEvtInterruptEn*, the return from an exception or interrupt are common and called a "trap return". Hardware tracing cannot distinguish between a return caused by an interrupt or an exception so if one or the other is turned off with these control bits, all trap returns will still be generated as EVT packets. The Trace decoder must deal with trap returns that may not have an associated exception or interrupt event. Privilege level filtering can be used to selectively quash some of them. The user may also choose to turn off the tracing of trap returns separately.
 
 ==== trTeEvtFeatures: Event Trace Features RO Register (trBaseEncoder+0x104)
 
+////
 .Event Trace Features Read-only Register - *trTeEvtFeatures* (32b)
 [%unbreakable]
 [wavedrom, , svg]
@@ -775,11 +803,12 @@ NOTE: For the setup of *trTeEvtExceptionEn* and *trTeEvtInterruptEn*, the return
   {bits: 19, name:'RESERVED'},
 ], config:{lanes: 8, hspace:1024}}
 ....
+////
 
 .Event Trace Features Read-only Register - *trTeEvtFeatures* (32b)
-[cols="1,2,5,1,1", options="header"]
+[cols="5%,12%,~,5%,10%", options="header"]
 |===
-^|Bit ^|Field ^|Description ^|RW ^|Reset
+^|Bits ^|Field ^|Description ^|RW ^|Reset
 |0
 |trTeEvtIntExcImp
 |Read as 1 if Interrupt and Exception event types are implemented
@@ -854,6 +883,7 @@ Each Event Type can be separately programmed to output PPC values when that Even
 
 NOTE: The value of the field is always 0 if the feature is not implemented, thus by writing 1 to each field, the WARL return value indicates if the feature is implemented. The reset value is also 0 for all fields which means that by default no Event Types will output PPC values until the user enables them.
 
+////
 .Event Trace PPC Enables Register - *trTeEvtPPCEnables* (32b)
 [%unbreakable]
 [wavedrom, , svg]
@@ -874,11 +904,12 @@ NOTE: The value of the field is always 0 if the feature is not implemented, thus
   {bits: 12, name:'RESERVED'},
 ], config:{lanes: 8, hspace:1024}}
 ....
-
+////
 .Event Trace PPC Enables Register - *trTeEvtPPCEnables* (32b)
-[cols="1,2,5,1,1", options="header"]
+//[cols="5%,12%,~,5%,5%", options="header"]
+[%autowidth,options="header"]
 |===
-^|Bit ^|Field ^|Description ^|RW ^|Reset
+^|Bits ^|Field ^|Description ^|RW ^|Reset
 |0
 |trTeEvtExcPPC
 |0: don't trace PPCs; 1: trace PPCs for Exceptions
@@ -966,7 +997,7 @@ The EVT developer has the choice of using hpmeventX selectors (components of the
 The Event Trace specification and associated memory mapping is assuming the maximum number of PPCs is 8. Thus the __i__ in the register name is an index from 0 to 7. If the implementation includes fewer than 8 PPCs, then the unused register slots are reserved.
 
 .Event Trace PPC Event Selector Register *trTeEvtPPCEvent__i__* fields
-[cols="1,1,6,1,1", options="header"]
+[%autowidth,options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
 |[31:0]
@@ -1000,9 +1031,10 @@ If MMIO access is implemented, software can first snapshot the counters then rea
 The *trTeEvtPPCCounter__i__* registers are similar to hpmcounterX counters of the HPM (hardware performance module). This set of registers is based on the PPC Alternative 2 (previously described in this document) where the PPCs are independent Profiling Performance counters.
 
 .Event Trace *trTeEvtPPCounter__i__* Capture Registers (24b)
-[cols="1,2,1,1,1,4", options="header"]
+//[cols="5%,15%,5%,5%,5%,~", options="header"]
+[%autowidth,options="header"]
 |===
-^|Trace Encoder Address Offset ^|Name ^|Size ^|RW ^|Reset ^|Description
+^|Addr Offset ^|Name ^|Size ^|RW ^|Reset ^|Description
 |0x150
 |PPCCounter0
 |[23:0]
@@ -1068,9 +1100,10 @@ NOTE: These fields are WARL; the value of the field is always 0 if the feature i
 
 .Event Trace External Signal Control - *trTeEvtExtSigControl* (32b) 
 
-[cols="1,2,5,1,1", options="header"]
+//[cols="5%,25%,~,5%,5%", options="header"]
+[%autowidth,options="header"]
 |===
-^|Bit ^|Field ^|Description ^|RW ^|Reset
+^|Bits ^|Field ^|Description ^|RW ^|Reset
 |1:0
 |trTeEvtExtSig0Edge
 |0: don't trace; 1: trace rising edge 2: trace falling edge 3: trace both edges
@@ -1176,9 +1209,9 @@ NOTE: The trace packet requires that the PC (address of latest retired instructi
 ....
 
 .Event Trace Performance Selector Control - *trTeEvtPerfSelectControl* (32b) 
-[cols="1,2,5,1,1", options="header"]
+[%autowidth,options="header"]
 |===
-^|Bit ^|Field ^|Description ^|RW ^|Reset
+^|Bits ^|Field ^|Description ^|RW ^|Reset
 |0
 |trTeEvtPerfSel0
 |0: don't trace; 1: trace rising edge of selector output; count level (high) during time window
