@@ -1216,7 +1216,7 @@ Range is 2^6 to 2^21, i.e. 64 cycles to ~2 million cycles in powers-of-2 increme
 |0
 
 |31:12
-|RESERVED | | |
+|RESERVED | | | |
 
 //== Extensions to N-Trace General Messages (for all trace modes)
 //Located in the file Trace-Control-Extensions.adoc
