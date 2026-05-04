@@ -115,8 +115,7 @@ All Event Trace features are optional, however, the minimal set of event types r
 NOTE: *F-ADDR* means full or uncompressed address. *C-ADDR* means compressed address which the trace decoder converts into a full address from a previous message, starting from a sync message that includes a full address. A C-ADDR, for N-Trace, is called a U-ADDR (U=unique) which is generated with "previous PC XOR current PC" to compress.  For E-Trace, compressed addresses (or delta address mode) are referred to as a differential encoding which is hardware logic that does "previous address - current address".
 
 .Event Trace Message Fields for non-function events
-//[cols="2,1,1,1,7", options="header"]
-[cols="12%,10%,10%,10%,~", options="header"]
+[cols="12%,10%,12%,10%,~", options="header"]
 //[%autowidth, options="header"]
 |===
 |Event |EVTPC |EVTDATA |ITYPE |Description
@@ -176,7 +175,7 @@ Generated when the source PC is filtered by privilege mode (but PCdest which is 
 The following table lists the message types to support function Calls and Returns, with different types and numbers of parameters.
 
 .Event Trace Message Types for Calls and Returns
-[cols="12%,15%,15%,10%,~", options="header"]
+[cols="15%,15%,15%,10%,~", options="header"]
 |===
 |Name |Source |Destination |ITYPE |Description
 
@@ -394,8 +393,7 @@ Below, the 'i' in trTeFilter**i**Control (and others) is reference to the index 
 === Privilege Level Filtering Requirements
 
 .Privilege Level Filtering Registers
-//[cols="1,1,2", options="header"]
-[%autowidth,options="header"]
+[cols="25%,25%,~", options="header"]
 |===
 |Register |Register Fields |Description
 |*trTeFilteriControl*
@@ -450,8 +448,7 @@ Below, the 'i' in trTeFilter**i**Control (and others) is reference to the index 
 Table of (encoded) Exception cause values (from RISC-V Instruction Set Manual: Vol II).
 
 .Exception cause values
-//[cols="4%,12%,12%,12%,4%,12%,12%,12%", options="header"]
-[%autowidth,options="header"]
+[cols="4%,12%,12%,12%,4%,12%,12%,12%", options="header"]
 |===
 |Value |m-cause |s-cause |vs-mode |Value |m-cause |s-cause |vs-mode
 |0 |Instruction address misaligned|Instruction address misaligned |Instruction address misaligned |13 |Load page fault |Load page fault |Load page fault
@@ -475,7 +472,7 @@ Table of (encoded) Exception cause values (from RISC-V Instruction Set Manual: V
 Note that several of the registers are "shared" with Ecause filtering, thus the name of the field may not match the comparison being made.  For example, trTeFilterMatchChoiceEcauseLow is used to compare against the cause value for both exceptions and interrupts.
 
 .Interrupt Cause Register Filtering
-[cols="25%,30%,~", options="header"]
+[cols="28%,32%,~", options="header"]
 |===
 |Register | Register Fields |Description
 |*trTeFilteriControl*
@@ -520,16 +517,13 @@ The (encoded) Interrupt cause values (from the RISC-V Instruction Set Manual: Vo
 |≥16 |Designated for platform use
 |===
 
-
-
 === Context ID Filtering Requirements
 To enable Event Trace on matching a single Context ID write value and disable Event Trace on a non-match write to Context ID requires the Table setup below.
 
 For *trTeCompjControl* and *trTeCompjMatchLow* below, j=0 which defines the first comparator.  If the developer wants to support multiple Context ID matches, then j=1,2,... defines additional comparators.
 
 .Context ID Filtering
-[%autowidth,options="header"]
-[cols="1,1,2", options="header"]
+[cols="28%,32%,~", options="header"]
 |===
 |Register | Register Fields |Description
 |*trTeComp0Control*
@@ -907,7 +901,7 @@ NOTE: The value of the field is always 0 if the feature is not implemented, thus
 ....
 ////
 .Event Trace PPC Enables Register - *trTeEvtPPCEnables* (32b)
-[cols="8%,18%,~,6%,5%", options="header"]
+[cols="8%,20%,~,8%,8%", options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
 |0
@@ -1031,7 +1025,7 @@ If MMIO access is implemented, software can first snapshot the counters then rea
 The *trTeEvtPPCCounter__i__* registers are similar to hpmcounterX counters of the HPM (hardware performance module). This set of registers is based on the PPC Alternative 2 (previously described in this document) where the PPCs are independent Profiling Performance counters.
 
 .Event Trace *trTeEvtPPCounter__i__* Capture Registers (24b)
-[cols="5%,15%,8%,8%,8%,~", options="header"]
+[cols="10%,15%,8%,8%,8%,~", options="header"]
 |===
 ^|Addr Offset ^|Name ^|Size ^|RW ^|Reset ^|Description
 |0x150
@@ -1099,7 +1093,7 @@ NOTE: These fields are WARL; the value of the field is always 0 if the feature i
 
 .Event Trace External Signal Control - *trTeEvtExtSigControl* (32b) 
 
-[cols="8%,23%,~,8%,5%", options="header"]
+[cols="8%,25%,~,8%,8%", options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
 |1:0
@@ -1207,7 +1201,7 @@ NOTE: The trace packet requires that the PC (address of latest retired instructi
 ....
 
 .Event Trace Performance Selector Control - *trTeEvtPerfSelectControl* (32b) 
-[cols="8%,20%,~,6%,5%", options="header"]
+[cols="8%,22%,~,8%,8%", options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
 |0
