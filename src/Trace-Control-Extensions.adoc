@@ -1,7 +1,7 @@
 
+== Trace Control Extensions for Event Trace
 [[Trace Control Extensions for Event Trace]]
 
-== Trace Control Extensions for Event Trace
 This file (Trace-Control-Extensions.adoc) defines the extensions required to the "RISC-V-Trace-Control-Interface.pdf" spec to support Event Trace.
 
 The Trace Control Interface spec, Table 4, has several reserved address ranges labeled "Reserved for future standard extension". Event Trace control registers starting point is an offset from the Trace Encoder base address. The Event Trace allocates and uses addresses *0x100-0x17F*. Thus *trTeEventBase = trBaseEncoder+0x100*.
