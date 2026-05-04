@@ -1,4 +1,6 @@
+
 [[N-Trace Packets]]
+
 == N-Trace Packets
 
 This file (n-Trace-packets.adoc) defines the N-Trace packets for Event Trace.
