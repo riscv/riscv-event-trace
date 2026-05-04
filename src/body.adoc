@@ -844,9 +844,7 @@ NOTE: For the setup of *trTeEvtExceptionEn* and *trTeEvtInterruptEn*, the return
 |0 (SD)
 
 |31:13
-|RESERVED
-|
-|
+|RESERVED | | |
 |===
 SD = System Dependent. Reset value of a field is dependent on the build.
 
