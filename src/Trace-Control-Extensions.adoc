@@ -25,7 +25,7 @@ The interval count is 2^(7+trTsSyncMax) where *trTsSyncMax* usable values ranges
 ==== Register: *trTsControl*: Timestamp Control Register Field
 
 .Timestamp Control Register Field - *trTsControl.TrTsSyncMax* (32b)
-[cols="1,1,5,1,1", options="header"]
+[cols="8%,15%,~,8%,8%", options="header"]
 |===
 |Bits |Field |Description |RW |Reset
 
