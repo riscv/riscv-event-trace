@@ -10,7 +10,7 @@ This file (n-Trace-packets.adoc) defines the N-Trace packets for Event Trace.
 N-Trace MTIME_SYNC Message to record mtime and trace timestamp simultaneously for Timing Synchronization.
 
 .N-Trace MTIME_SYNC Message for Timing Synchronization
-[cols="1,1,9", width=80%, options="header"]
+[cols="8%,15%,~", width=80%, options="header"]
 |===
 |Bits |Field |Description
 
