@@ -51,22 +51,22 @@ itype = 8 (indirect call), 9 (direct call), 12 (co-routine swap), 13 (return)
 |*Periodic PC Sampling*
 |Programmable timer that generates a trace packet with the most recent retired PC and timestamp when it expires.  This allows for periodic PC sampling of the executing code to provide an execution profile over time.
 
-|*External "trigger" Events*
-|Edge-triggered signals that can insert a trace packet containing the closest retired PC at the time of the event, plus timestamp.  This enables tracing of external events such as interrupts, I/O events, DMA start-end markers, uncore signals, or user-selectable SoC-based events outside of core execution and to time correlate them *with* program execution. (Defined in the Trace Control Interface spec as "External Trace Triggers").
+|*External Signal (trigger) Events*
+|Edge-triggered signals that can insert a trace packet containing the closest retired PC at the time of the event, plus timestamp.  This enables tracing of external events such as interrupts, I/O events, DMA start-end markers, uncore signals, or user-selectable SoC-based events outside of core execution and to *time correlate* them with program execution. (Defined in the Trace Control Interface spec as "External Trace Triggers").
 
 |*Performance Counter Selector Events*
-|Event Trace generates a trace packet when an enabled performance counter selector output is a "1" level.  The trace packet includes the most recent retired instruction PC and timestamp. This enables tracing of where in the executing code a performance event occurs such as a cache miss, branch mispredict, or any other countable event that can be selected by a performance counter selector.
+|RISC-V HPM (Hardware Performance Monitor) includes selector registers (mhpmeventX) which are user-programmed to select one (or several) core event types to count. This Event Trace feature extends this perf counter feature to record the closest retired PC on the rising edge of mhpmeventX output and save it in the trace buffer thus showing *where* in the code the core event occurred.
 |===
 
 === Event Trace Timestamp
 
-The *Event Trace Timestamp* is the same timestamp timer used by Instruction Trace. It is a continuous running count-up counter (not a delta timer).  As the RISC-V-Trace-Control-Interface specification describes in detail, there are optional sources for the timestamp: 1) External, 2)Internal System, 3)Internal Core, and 4)Shared.
+The *Event Trace Timestamp* is the same timestamp timer used by Instruction Trace. It is a continuous running count-up counter (not a delta timer).  As the RISC-V-Trace-Control-Interface specification describes in detail, there are optional sources for the timestamp: 1) External, 2) Internal System, 3) Internal Core, and 4) Shared.
 
 If the (optional) Timestamp Unit is included in the Instruction Trace, then:
 
 * *Timestamp enable*: must be enabled by setting *trTsControl.trTsActive*, *trTsControl.trTsEnable*, and started by setting *trTsControl.trTsCount*.
 
-* *Timestamp off*:  turned off (for Instruction AND Event Trace) by clearing *trTsControl.trTsEnable* to save some trace bandwidth and storage.
+* *Timestamp off*:  turned off, i.e. not included in trace packets (for Instruction AND Event Trace) by clearing *trTsControl.trTsEnable*. This can save some trace bandwidth and storage.
 
 * *Timestamp reset*: timestamp register can be reset by setting, then clearing *trTsControl.trTsReset*. This is recommended before starting a trace session since lower-values timestamps can benefit trace bandwidth and storage, because of leading-zero suppression.
 
@@ -103,7 +103,7 @@ All Event Trace features are optional, however, the minimal set of event types r
 |Optional
 |*Periodic PC Sampling*
 |Optional
-|*External "trigger" Events*
+|*External Signal (trigger) Events*
 |Optional
 |*Performance Counter Selector Events*
 |Optional
@@ -531,11 +531,11 @@ For *trTeCompjControl* and *trTeCompjMatchLow* below, j=0 which defines the firs
 (Secondary comparator is not needed for context ID filtering since it is only a single value match. It is unclear whether these 'S' fields need to be included in the hardware).
 
 === Event Trace-specific Hardware Filtering
-(to-be-documented)
-
 
 ==== Leaf Function Filtering
-(to-be-documented)
+Leaf function filtering is the hardware filtering of call-return pairs which meet a time duration "less-than N cycles" threshold in order to reduce trace bandwidth and save storage for short functions that are less interesting to trace.
+
+More documentation to follow.
 
 == Event Trace Control Registers
 
@@ -1215,7 +1215,7 @@ Range is 2^6 to 2^21, i.e. 64 cycles to ~2 million cycles in powers-of-2 increme
 |0
 
 |31:12
-|RESERVED | xx| yy| zz
+|RESERVED | | | 
 |===
 
 //== Extensions to N-Trace General Messages (for all trace modes)
