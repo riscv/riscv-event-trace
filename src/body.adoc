@@ -1,7 +1,6 @@
 //5-4-26 5:12am
 
 [[body]]
-
 == Event Trace Features
 
 * Extension of ratified RISC-V Instruction Trace as an additional encoder mode with additional message types

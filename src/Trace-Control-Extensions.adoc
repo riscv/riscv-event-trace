@@ -1,5 +1,4 @@
 [[Trace Control Extensions for Event Trace]]
-
 == Trace Control Extensions for Event Trace
 This file (Trace-Control-Extensions.adoc) defines the extensions required to the "RISC-V-Trace-Control-Interface.pdf" spec to support Event Trace.
 
