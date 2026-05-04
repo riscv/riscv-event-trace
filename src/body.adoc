@@ -393,7 +393,7 @@ Below, the 'i' in trTeFilter**i**Control (and others) is reference to the index 
 === Privilege Level Filtering Requirements
 
 .Privilege Level Filtering Registers
-[cols="25%,25%,~", options="header"]
+[cols="25%,30%,~", options="header"]
 |===
 |Register |Register Fields |Description
 |*trTeFilteriControl*
@@ -423,7 +423,7 @@ Below, the 'i' in trTeFilter**i**Control (and others) is reference to the index 
 
 === Exception Cause Register Filtering
 .Exception Cause (Ecause) Filtering 
-[cols="25%,25%,~", options="header"]
+[cols="30%,30%,~", options="header"]
 |===
 |Register | Register Fields |Description
 |  *trTeFilteriControl*
@@ -641,7 +641,7 @@ Sets the number of PPCs output with each Event Type enabled.
 ////
 
 .Event Trace Control Register fields for *trTeEvtControl* (32b)
-[cols="5%,18%,~,6%,5%", options="header"]
+[cols="5%,25%,~,8%,8%", options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
 |0
@@ -779,7 +779,6 @@ Note: Context writes are also enabled when the *trTeControl.trTeContext* bit is 
 NOTE: For the setup of *trTeEvtExceptionEn* and *trTeEvtInterruptEn*, the return from an exception or interrupt are common and called a "trap return". Hardware tracing cannot distinguish between a return caused by an interrupt or an exception so if one or the other is turned off with these control bits, all trap returns will still be generated as EVT packets. The Trace decoder must deal with trap returns that may not have an associated exception or interrupt event. Privilege level filtering can be used to selectively quash some of them. The user may also choose to turn off the tracing of trap returns separately.
 
 ==== trTeEvtFeatures: Event Trace Features RO Register (trBaseEncoder+0x104)
-
 ////
 .Event Trace Features Read-only Register - *trTeEvtFeatures* (32b)
 [%unbreakable]
@@ -802,7 +801,7 @@ NOTE: For the setup of *trTeEvtExceptionEn* and *trTeEvtInterruptEn*, the return
 ////
 
 .Event Trace Features Read-only Register - *trTeEvtFeatures* (32b)
-[cols="5%,18%,~,5%,10%", options="header"]
+[cols="5%,22%,~,5%,10%", options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
 |0
