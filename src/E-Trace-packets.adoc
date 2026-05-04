@@ -1,6 +1,8 @@
 
-[[E-Trace Packets]]
+
 
 == E-Trace Packets
+[[E-Trace Packets]]
+
 This file (E-Trace-packets.adoc) defines the E-Trace packets for Event Trace.
 
