@@ -1,6 +1,6 @@
 
+[#intro]
 == Introduction
-[[intro]]
 
 Event Trace is an extension to the RISC-V Instruction Trace that provides hardware support for selectively tracing key executed events, called Event Types. It enables the capture of detailed execution information, which can be used for debugging, performance analysis, and system monitoring.
 

@@ -1,0 +1,50 @@
+[#RHTI Extensions]
+== RHTI Extensions for Event Trace
+
+This file (RHTI-Extensions.adoc) defines extensions to the "RISC-V Hart to Trace Interface Specification" (RHTI) to support several features for Event Trace.  While an implementer can wire up these signals "on their own", RHTI defines them, along with all the existing signal definitions for Instruction Trace, to provide the named signals for Event Trace use.
+
+=== Trigger/Watchpoint ID
+[#Trigger/Watchpoint-ID, Trigger/Watchpoint ID]
+As explained in the RHTI "Optional sideband signals" section of the specification, the debug module of the RISC-V hart may have a "Trigger Unit" (name "Trigger Module" in the RISC-V Debug specification). A 4-bit action field defines what happens when a trigger/watchpoint match occurs. Encoded codes 2-5 are for trace use.  The value 4 is *Trace-notify*.
+
+
+
+The RHTI defines trigger[2] to be the *Trace-notify* signal.  When asserted, it indicates a match on one of the programmed hw triggers. 
+
+The following signal definition extends the section "Optional sideband signals",  Table 8 of the spec with the definition of *triggerID* which identifies *which* trigger matched.
+
+.Optional sideband encoder *triggerID* output signals
+[cols="15%, 15%,~",options="header"]
+|===
+^|*Signal* ^|*Group* ^|*Function*
+|*triggerID* | O | 4-bit field that encodes the ID of the matching trigger thus supports up to 16 triggers. 
+
+If multiple triggers match on the same cycle, hardware precedence must ensure that the lowest ID value is asserted on the triggerID field (over higher ID encoded values). This may occur with a core which retires more than one instruction per cycle, or hw trigger comparisons overlap, in which case the hardware selects the lowest ID matching. (And there is nothing to prevent a user from programming multiple triggers with the same match condition.)
+|===
+
+[#Performance Counter Selector Output]
+=== Performance Counter Select Output
+
+.Optional sideband encoder *PPCselectNum* output signals
+[cols="38%, 10%, ~"]
+|===
+^|*Signal* ^|*Group* ^|*Function*
+|*PPCselectNum*[_selectNum_p-1_:0] 
+| O | Field that carries (routes) the least significant N Hardware Performance Monitor (HPM) hpmEventX select outputs, where N is _selectNum_p_. These signal outputs may be used for profiling performance counter selection counting or Selector-based event generation or both.
+
+If HPM mhpmeventX selectors are being used (Alternative 2), _selectNum_p_ can be as small as 1 and as large as 8. Note that they 
+|===
+
+[#Instruction Retired Count]
+=== Instruction Retired Count
+
+.Optional sideband encoder *InstRetCount* output signals
+[cols="38%, 10%, ~"]
+|===
+^|*Signal* ^|*Group* ^|*Function*
+|*instretcount*[_countwidth_p-1_:0] 
+| O | Number of instructions retired in this cycle. This is usable by trace to accumulate the total number of instructions retired at the time of a trace message. The width of this field is _countwidth_p_ which can be as small as 1 and as large as the encoded max number of retired instructions.  
+
+For example, if a core can retire up to 4 instructions per cycle, then a 3-bit width is required to encode the count of retired instructions from 0 to 4.
+
+|===

@@ -1,6 +1,5 @@
-
+[#Trace Control Extensions for Event Trace]
 == Trace Control Extensions for Event Trace
-[[Trace Control Extensions for Event Trace]]
 
 This file (Trace-Control-Extensions.adoc) defines the extensions required to the "RISC-V-Trace-Control-Interface.pdf" spec to support Event Trace.
 
@@ -14,6 +13,7 @@ This document defines Event Trace as a sub-component of the Trace Encoder. Event
 
 which is defined in the N-Trace spec as *"Protocol defined trace mode"*.
 
+[#time-sync-message]
 === Time Synchronization Message for simultaneously recording mtime & timestamp
 
 This message is common for N-Trace and E-Trace Instruction Trace and its purpose is to record mtime and trace timestamp simultaneously for Trace message synchronization. This message is generated periodically based on a configurable interval of N- or E-Trace messages, and also aperiodically after certain events such as trace-on, exit debug, exit reset, ProgTraceSync message, and immediately after trace has stopped or halted.
@@ -44,7 +44,6 @@ The interval count is 2^(7+trTsSyncMax) where *trTsSyncMax* usable values ranges
 If enabled, an MTIME_SYNC message shall be generated sometime after (when is not critical):
 
 1. a trace-on, exit debug, or exit reset message
-2. ProgTraceSync message
-3. immediately after trace has stopped or halted (this needs to be timely)
+2. immediately after trace has stopped or halted (this needs to be timely)
 
 This provides the time synchronization after a gap in trace and at the end of the trace buffer. The interval timer must also be reset.

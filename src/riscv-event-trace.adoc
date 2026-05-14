@@ -77,10 +77,11 @@ include::contributors.adoc[]
 
 include::intro.adoc[]
 include::body.adoc[]
+include::RHTI-Extensions.adoc[]
 include::Trace-Control-Extensions.adoc[]
 include::N-Trace-packets.adoc[]
 include::E-Trace-packets.adoc[]
-
+include::appendix.adoc[]
 // The index must precede the bibliography
 {colophon}include::index.adoc[]
-//include::bibliography.adoc[]
+include::bibliography.adoc[]
