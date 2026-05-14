@@ -1,10 +1,11 @@
-[[RHTI Extensions]]
+//[[RHTI Extensions]]
 == RHTI Extensions for Event Trace
 
 This file (RHTI-Extensions.adoc) defines extensions to the "RISC-V Hart to Trace Interface Specification" (RHTI) to support several features for Event Trace.  While an implementer can wire up these signals "on their own", RHTI defines them, along with all the existing signal definitions for Instruction Trace, to provide the named signals for Event Trace use.
 
+//[[Trigger/Watchpoint-ID, Trigger/Watchpoint ID]]
 === Trigger/Watchpoint ID
-[#Trigger/Watchpoint-ID, Trigger/Watchpoint ID]
+
 As explained in the RHTI "Optional sideband signals" section of the specification, the debug module of the RISC-V hart may have a "Trigger Unit" (name "Trigger Module" in the RISC-V Debug specification). A 4-bit action field defines what happens when a trigger/watchpoint match occurs. Encoded codes 2-5 are for trace use.  The value 4 is *Trace-notify*.
 
 
@@ -14,7 +15,7 @@ The RHTI defines trigger[2] to be the *Trace-notify* signal.  When asserted, it 
 The following signal definition extends the section "Optional sideband signals",  Table 8 of the spec with the definition of *triggerID* which identifies *which* trigger matched.
 
 .Optional sideband encoder *triggerID* output signals
-[cols="15%, 15%,~",options="header"]
+[cols="12%, 12%,~",options="header"]
 |===
 ^|*Signal* ^|*Group* ^|*Function*
 |*triggerID* | O | 4-bit field that encodes the ID of the matching trigger thus supports up to 16 triggers. 
@@ -22,11 +23,11 @@ The following signal definition extends the section "Optional sideband signals",
 If multiple triggers match on the same cycle, hardware precedence must ensure that the lowest ID value is asserted on the triggerID field (over higher ID encoded values). This may occur with a core which retires more than one instruction per cycle, or hw trigger comparisons overlap, in which case the hardware selects the lowest ID matching. (And there is nothing to prevent a user from programming multiple triggers with the same match condition.)
 |===
 
-[[Performance Counter Selector Output]]
+//[[Performance Counter Selector Output]]
 === Performance Counter Select Output
 
 .Optional sideband encoder *PPCselectNum* output signals
-[cols="38%, 10%, ~"]
+[cols="35%, 10%, ~"]
 |===
 ^|*Signal* ^|*Group* ^|*Function*
 |*PPCselectNum*[_selectNum_p-1_:0] 
@@ -35,11 +36,11 @@ If multiple triggers match on the same cycle, hardware precedence must ensure th
 If HPM mhpmeventX selectors are being used (Alternative 2), _selectNum_p_ can be as small as 1 and as large as 8. Note that they 
 |===
 
-[[Instruction Retired Count]]
+//[[Instruction Retired Count]]
 === Instruction Retired Count
 
 .Optional sideband encoder *InstRetCount* output signals
-[cols="38%, 10%, ~"]
+[cols="35%, 10%, ~"]
 |===
 ^|*Signal* ^|*Group* ^|*Function*
 |*instretcount*[_countwidth_p-1_:0] 
