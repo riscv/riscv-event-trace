@@ -23,7 +23,7 @@ include::../docs-resources/global-config.adoc[]
 //:WaveDromEditorApp: wavedrom-cli
 :imagesoutdir: images
 //:srcdir: src
-:bibtex-file: src/example.bib
+:bibtex-file: src/event_trace.bib
 :bibtex-order: alphabetical
 :bibtex-style: apa
 :icons: font

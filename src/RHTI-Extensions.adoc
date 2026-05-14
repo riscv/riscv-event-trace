@@ -1,4 +1,4 @@
-[#RHTI Extensions]
+[[RHTI Extensions]]
 == RHTI Extensions for Event Trace
 
 This file (RHTI-Extensions.adoc) defines extensions to the "RISC-V Hart to Trace Interface Specification" (RHTI) to support several features for Event Trace.  While an implementer can wire up these signals "on their own", RHTI defines them, along with all the existing signal definitions for Instruction Trace, to provide the named signals for Event Trace use.
@@ -22,7 +22,7 @@ The following signal definition extends the section "Optional sideband signals",
 If multiple triggers match on the same cycle, hardware precedence must ensure that the lowest ID value is asserted on the triggerID field (over higher ID encoded values). This may occur with a core which retires more than one instruction per cycle, or hw trigger comparisons overlap, in which case the hardware selects the lowest ID matching. (And there is nothing to prevent a user from programming multiple triggers with the same match condition.)
 |===
 
-[#Performance Counter Selector Output]
+[[Performance Counter Selector Output]]
 === Performance Counter Select Output
 
 .Optional sideband encoder *PPCselectNum* output signals
@@ -35,7 +35,7 @@ If multiple triggers match on the same cycle, hardware precedence must ensure th
 If HPM mhpmeventX selectors are being used (Alternative 2), _selectNum_p_ can be as small as 1 and as large as 8. Note that they 
 |===
 
-[#Instruction Retired Count]
+[[Instruction Retired Count]]
 === Instruction Retired Count
 
 .Optional sideband encoder *InstRetCount* output signals
