@@ -1,6 +1,5 @@
 [appendix]
-
-[#Event Trace Operations]
+//[#Event Trace Operations]
 == Event Trace Operations (non-normative)
 
 * Event Trace is a mode of the Trace Encoder which is set up with *trTeControl.trTeInstMode=4*. Then, *trTeControl.trTeEnable* is used to enable trace or disable and flush it, with *trTeControl.trTeEmpty* used to indicate when the flush has completed.
@@ -14,3 +13,184 @@
 * A self-hosted trace analysis program such as Linux _perf_ could control the starting and stopping of Event Trace.
 * Trace hardware supports on-the-fly switching between Event Trace and Instruction Trace. Memory-mapped (MMIO) hardware control registers allow a user program to change modes of trace so a trace recording can have both instruction trace messages intermixed with event trace messages. This feature allows the tracing of a portion of one program/process full execution while also tracing kernel-level events such as going in and out of kernel mode and running other processes. 
 // More details are in section "Operational Description & Message Rules".
+
+[appendix]
+== Event Trace Global and per-Event Filtering (non-normative)
+
+These global and per-event filters are documented in the *RISC-V Trace Control Interface Specification*, section 6.3. These are documented here since they are already documented and the specification ratified.
+
+There are several types of useful Event Trace filters that can be provided by hardware to reduce the volume of trace data and focus on relevant information.  While these registers and associated hardware are optional, [underline]#they are required to be included in the implementation of Trace hardware.#
+
+Global filters are:
+
+* Privilege level filtering - only trace events that occur in a specific privilege level or set of privilege levels.  This is useful for tracing events in user mode vs. kernel mode.
+
+* Context ID filtering - only trace events that occur in a specific context ID or set of context IDs.  This is useful for tracing events in a specific process or thread.
+
+Per-event filters are:
+
+* Cause register filtering - only trace events that occur with specific cause register values are traced.  These are applicable to exception or interrupt Event Types.
+
+
+Below, the 'i' in trTeFilter**i**Control (and others) is reference to the index of the register (0, 1, etc), which means the developer can instantiate multiple sets of filter registers.
+
+=== Privilege Level Filtering Requirements
+
+.Privilege Level Filtering Registers
+[cols="25%,30%,~", options="header"]
+|===
+^|Register ^|Register Fields ^|Description
+|*trTeFilteriControl*
+| *.trTeFilterEnable* +
+  *.trTeFilterMatchPrivilege*
+|  Set = 1 +
+  Set = 1 +
+  All other fields set to 0 
+|*trTeFilteriMatchInst*
+| *.trTeFilterMatchChoicePrivilege*
+|  [7:0] bits to match Privilege levels list in table below
+|===
+
+.Privilege level encoding (from RHTI spec)
+[%autowidth,options="header"]
+|===
+| *Value* | *Description*
+|0 | U
+|1 | S/HS
+|2 | reserved
+|3 | M
+|4 | D (debug mode)
+|5 | VU
+|6 | VS
+|7 | reserved
+|===
+
+=== Context ID Filtering Requirements
+To enable Event Trace on matching a single Context ID write value and disable Event Trace on a non-match write to Context ID requires the Table setup below.
+
+For *trTeCompjControl* and *trTeCompjMatchLow* below, j=0 which defines the first comparator.  If the developer wants to support multiple Context ID matches, then j=1,2,... defines additional comparators.
+
+.Context ID Filtering
+[cols="28%,32%,~", options="header"]
+|===
+^|Register ^|Register Fields ^|Description
+|*trTeComp0Control*
+| *.trTeCompPInput*
+  *.trTeCompSInput*
+| [1:0] Set = 1: context +
+  [3:2] Set = 1: context
+|
+| *.trTeCompPFunction* +
+  *.trTeCompSFunction*
+| [6:4] Set = 0: *equal to* trTeCompPMatch +
+  [10:8] Set = 0: *equal to* trTeCompSMatch
+|
+| *.trTeCompMatchMode*
+| [13:12] Set = 0: *primary result true*
+|
+| *trTeCompPNotify*
+| Set = 1 to generate an Event Trace packet when primary comparator match occurs
+|
+| All other fields set to 0 |
+|*trTeComp0MatchLow*
+| *.trTeCompPMatchLow*
+| [31:0] *Match value for*  (primary comparator)
+|===
+
+(Secondary comparator is not needed for context ID filtering since it is only a single value match. It is unclear whether these 'S' fields need to be included in the hardware).
+
+=== Exception Cause Register Filtering
+.Exception Cause (Ecause) Filtering 
+[cols="30%,30%,~", options="header"]
+|===
+^|Register ^|Register Fields ^|Description
+|  *trTeFilteriControl*
+|  *.trTeFilterEnable* +
+  *.trTeFilterMatchEcause* +
+| Set = 1 +
+  Set = 1 (to compare Ecause value) +
+  All other fields set to 0 
+|*trTeFilteriMatchInst*
+ |*.trTeFilterValueInterrupt* +
+ (Note the name doesn't match the comparison)
+ | [8:8] Set = 0 to match on exception (itype = 1) +
+  All other fields set to 0
+|*trTeFilteriMatchEcauseLow*
+| *.trTeFilterMatchChoiceEcauseLow*
+| [31:0] bit mask; set bit(s) to 1 to match encoded value of Ecause
+|*trTeFilteriMatchEcauseHigh*
+| *.trTeFilterMatchChoiceEcauseHigh*
+|[63:32] bits of Ecause (high) value
+|===
+
+Table of (encoded) Exception cause values (from RISC-V Instruction Set Manual: Vol II).
+
+.Exception cause values
+[cols="4%,12%,12%,12%,4%,12%,12%,12%", options="header"]
+|===
+|Value |m-cause |s-cause |vs-mode |Value |m-cause |s-cause |vs-mode
+|0 |Instruction address misaligned|Instruction address misaligned |Instruction address misaligned |13 |Load page fault |Load page fault |Load page fault
+|1 |Instruction access fault |Instruction access fault |Instruction access fault |14 |Reserved |Reserved |Reserved
+|2 |Illegal instruction |Illegal instruction |Illegal instruction |15 |Store/AMO page fault |Store/AMO page fault |Store/AMO page fault
+|3 |Breakpoint |Breakpoint|Breakpoint |16 |Double trap |Reserved |Reserved
+|4 |Load address misaligned |Load address misaligned |Load address misaligned |17 |Reserved |Reserved |Reserved
+|5 |Load access fault |Load access fault |Load access fault |18 |Software check |Software check |Reserved
+|6 |Store/AMO address misaligned |Store/AMO address misaligned |Store/AMO address misaligned |19 |Hardware error |Hardware error |Reserved
+|7 |Store/AMO access fault |Store/AMO access fault |Store/AMO access fault |20 |Reserved |Reserved |Instruction guest-page fault
+|8 |Environment call from U-mode |Environment call from U-mode |Environment call from U-mode or VU-mode |21 |Reserved |Reserved |Load guest-page fault
+|9 |Environment call from S-mode |Environment call from S-mode |Environment call from HS-mode  |22 |Reserved |Reserved |*Virtual instruction*
+|10|Reserved |Reserved |Environment call from VS-mode |23 |Reserved |Reserved |Store/AMO guest-page fault
+|11|Environment call from M-mode |Reserved |Environment call from M-mode |24-31 |Custom use |Custom use |Custom use
+|12|Instruction page fault |Instruction page fault |Instruction page fault |32-47 |Reserved |Reserved |Reserved
+|  |                     |  | |48-63 |Custom use |Custom use |Custom use
+|===
+
+=== Interrupt Cause Register Filtering  
+
+Note that several of the registers are "shared" with Ecause filtering, thus the name of the field may not match the comparison being made.  For example, trTeFilterMatchChoiceEcauseLow is used to compare against the cause value for both exceptions and interrupts.
+
+.Interrupt Cause Register Filtering
+[cols="28%,32%,~", options="header"]
+|===
+^|Register ^|Register Fields ^|Description
+|*trTeFilteriControl*
+| *.trTeFilterEnable* +
+ *.trTeFilterMatchInterrupt*
+|  Set = 1 +
+  Set = 1 (to compare Interrupt cause value) +
+  All other fields set to 0
+|*trTeFilteriMatchInst*
+|*.trTeFilterValueInterrupt*
+|  [8:8] Set = 1 to match on interrupt (itype = 2) +
+  All other fields set to 0
+|*trTeFilteriMatchEcauseLow*
+| *.trTeFilterMatchChoiceEcauseLow*
+|    [31:0] bit mask; set bit(s) to 1 to match encoded values 0 to 31 of Interrupt cause
+|*trTeFilteriMatchEcauseHigh*
+|  *.trTeFilterMatchChoiceEcauseHigh*
+|    [63:32] bit mask; set bit(s) to 1 to match encoded values 32 to 63 of Interrupt cause
+|===
+
+The (encoded) Interrupt cause values (from the RISC-V Instruction Set Manual: Vol II) are located in Table 16 - mcause, Table 37 - scause, and Table 50 when the hypervisor extension is implemented.  Below is Table 50:
+
+//[cols="35%,60%", width=50%, options="header"]
+[%autowidth,options="header"]
+|===
+|Exception Code | Description
+|0 |Reserved
+|1 |Supervisor software interrupt
+|2 |Virtual supervisor software interrupt
+|3 |Machine software interrupt
+|4 |Reserved
+|5 |Supervisor timer interrupt
+|6 |Virtual supervisor timer interrupt
+|7 |Machine timer interrupt
+|8 |Reserved
+|9 |Supervisor external interrupt
+|10 |Virtual supervisor external interrupt
+|11 |Machine external interrupt
+|12 |Supervisor guest external interrupt
+|13 |Counter-overflow interrupt
+|14-15 |Reserved
+|≥16 |Designated for platform use
+|===
