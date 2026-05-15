@@ -23,7 +23,7 @@ include::../docs-resources/global-config.adoc[]
 //:WaveDromEditorApp: wavedrom-cli
 :imagesoutdir: images
 //:srcdir: src
-:bibtex-file: src/event_trace.bib
+:bibtex-file: event_trace.bib
 :bibtex-order: alphabetical
 :bibtex-style: apa
 :icons: font
@@ -50,16 +50,14 @@ list-of::image[hide_empty_section=true, enhanced_rendering=true]
 == List of tables
 list-of::table[hide_empty_section=true, enhanced_rendering=true]
 
-[preface]
-== List of listings
-
-list-of::listing[hide_empty_section=true, enhanced_rendering=true]
+//[preface]
+//== List of listings
+//list-of::listing[hide_empty_section=true, enhanced_rendering=true]
 
 [WARNING]
 .This document is in the link:http://riscv.org/spec-state[Development state]
 ====
-Expect potential changes. This draft specification is likely to evolve before
-it is accepted as a standard. Implementations based on this draft
+Expect potential changes. This draft specification is likely to evolve before it is accepted as a standard. Implementations based on this draft
 may not conform to the future standard.
 ====
 
