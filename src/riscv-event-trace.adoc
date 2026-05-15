@@ -25,7 +25,7 @@ include::../docs-resources/global-config.adoc[]
 //:srcdir: src
 :bibtex-file: src/event_trace.bib
 :bibtex-order: alphabetical
-:bibtex-style: apa
+:bibtex-style: ieee
 :icons: font
 :lang: en
 :listing-caption: Listing
