@@ -20,7 +20,7 @@ This message is common for N-Trace and E-Trace Instruction Trace and its purpose
 
 *MTIME_SYNC Periodic Generation* The period for generating MTIME_SYNC is defined by a field in the register *trTsControl* inside the TimeStamp (TS) sub-component of Instruction Trace. The field, [14:10], of the ratified spec is Reserved. The lower 4 bits are, in this spec, being relabeled *trTsControl.trTsSyncMax*. This controls the interval for generating the MTIME_SYNC message based on a count of the number of N-Trace messages output.
 
-The interval count is 2^(7+trTsSyncMax) where *trTsSyncMax* usable values ranges from 1 to 15, where 0 is *"off"*. This provides a range from 2^8 (256) to 2^22 (~4x10^6). Note that this field is WARL so some of the upper values could be left out to reduce hardware.
+*Interval Count* The interval count is 2^(7+trTsSyncMax) where *trTsSyncMax* usable values ranges from 1 to 15, where 0 is *"off"*. This provides a range from 2^8 (256) to 2^22 (~4x10^6). Note that this field is WARL so some of the upper values could be left out to reduce hardware.
 
 ==== Register *trTsControl*: Timestamp Control Register Field
 
@@ -37,7 +37,7 @@ The interval count is 2^(7+trTsSyncMax) where *trTsSyncMax* usable values ranges
 |0
 |===
 
-*Engineering NOTE:* MTIME_SYNC can be implemented by using a 16-input multiplexer; the first input selects always-0, the remaining 15 inputs connect to the appropriate divide-by-2 taps of the binary counter of N-Trace messages, starting at bit 7 and ending at bit 22, with the 4 bits of trTsSyncMax as the mux selector. This logic then generates an output pulse of MTIME_SYNC at the rising edge of the mux output. As mentioned, a narrower mux could be used in the actual implementation to save on hardware. A 10-input mux would have a max period of 2^17, or 128K of N-Trace messages.
+*Engineering (non-normative) NOTE:* MTIME_SYNC can be implemented by using a 16-input multiplexer; the first input selects always-0, the remaining 15 inputs connect to the appropriate divide-by-2 taps of the binary counter of N-Trace messages, starting at bit 7 and ending at bit 22, with the 4 bits of trTsSyncMax as the mux selector. This logic then generates an output pulse of MTIME_SYNC at the rising edge of the mux output. As mentioned, a narrower mux could be used in the actual implementation to save on hardware. A 10-input mux would have a max period of 2^17, or 128K of N-Trace messages.
 
 === MTIME_SYNC Aperiodic Generation
 
