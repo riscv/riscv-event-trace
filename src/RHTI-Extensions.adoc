@@ -31,9 +31,9 @@ If multiple triggers match on the same cycle, hardware precedence must ensure th
 |===
 ^|*Signal* ^|*Group* ^|*Function*
 |*PPCselectNum*[_selectNum_p-1_:0] 
-| O | Field that carries (routes) the least significant N Hardware Performance Monitor (HPM) hpmEventX select outputs, where N is _selectNum_p_. These signal outputs may be used for profiling performance counter selection counting or Selector-based event generation or both.
+| O | Field that carries (routes) the least significant N Hardware Performance Monitor (HPM) hpmEventX select outputs, where N is _selectNum_p_. These signal outputs may be used for profiling performance counter delta counting or Selector-based event generation or both.
 
-If HPM mhpmeventX selectors are being used (Alternative 2), _selectNum_p_ can be as small as 1 and as large as 8. Note that they 
+If HPM mhpmeventX selectors are being used (Alternative 2), _selectNum_p_ can range from 1 to 8.
 |===
 
 //[[Instruction Retired Count]]

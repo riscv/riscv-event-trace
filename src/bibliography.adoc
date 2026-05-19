@@ -1,6 +1,5 @@
 
 [bibliography]
 == Bibliography
-
-//bibliography::[]
-bibtex::[]
+bibliography::[]
+//bibtex::[]

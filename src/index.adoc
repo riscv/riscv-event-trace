@@ -1,2 +1,3 @@
-//[#index]
-= Index
+[index]
+== Index
+index::[]
