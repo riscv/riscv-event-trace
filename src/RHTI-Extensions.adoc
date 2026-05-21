@@ -7,7 +7,7 @@ This file (RHTI-Extensions.adoc) defines extensions to the "RISC-V Hart to Trace
 //[[Trigger/Watchpoint-ID, Trigger/Watchpoint ID]]
 === Trigger/Watchpoint ID
 
-As explained in the RHTI cite:[riscv-RHTI-spec-0.83, Optional sideband signals] section of the specification, the debug module of the RISC-V hart may have a "Trigger Unit", also named "Trigger Module" in the RISC-V Debug specification cite:[riscv-debug-spec-1.0, chpt 5]. A 4-bit action field defines what happens when a trigger/watchpoint match occurs. Encoded codes 2-5 are for trace use.  The value 4 is *Trace-notify*.
+As explained in the RHTI xref:riscv-RHTI-spec-0.83[Optional sideband signals] section of the specification, the debug module of the RISC-V hart may have a "Trigger Unit", also named "Trigger Module" in the RISC-V Debug specification xref:riscv-debug-spec-1.0[chpt 5]. A 4-bit action field defines what happens when a trigger/watchpoint match occurs. Encoded codes 2-5 are for trace use.  The value 4 is *Trace-notify*.
 
 The RHTI defines trigger +[2]+ signal to be *Trace-notify*.  When asserted, it indicates a match on one of the programmed hw triggers. 
 
