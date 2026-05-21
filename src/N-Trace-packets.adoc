@@ -1,9 +1,11 @@
 
-== N-Trace cite:[riscv-N-Trace-spec-1.0] Packets
+== N-Trace Packets
+(((Event Trace, N-Trace packets)))
 
-This file (n-Trace-packets.adoc) defines the N-Trace packets for Event Trace.
+This file (N-Trace-packets.adoc) defines the N-Trace cite:[riscv-N-Trace-spec-1.0] packets for Event Trace.
 
 === Time Synchronization Packet for recording mtime & timestamp
+(((N-Trace, MTIME_SYNC packet)))
 
 N-Trace MTIME_SYNC Message to record mtime and trace timestamp simultaneously for Timing Synchronization.
 
