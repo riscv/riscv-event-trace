@@ -107,11 +107,11 @@ Exceptions occur whenever the processor undergoes privilege mode changes; tracin
 |*Interrupts*
 |Tracing occurrences of interrupts and their causes can be beneficial for observing correct interrupt priorities, nested interrupts, and the duration of interrupt handlers - especially critical in embedded systems.
 |*PPCs - Profiling Performance Counters*
-|PPCs provide detailed microarchitectural information about the dynamics of processor efficiency and throughput such as IPC, cache misses, branch mispredicts, stalls, etc. They can be used with Watchpoints to measure precise execution from point A to B of a code segments. 
+|PPCs provide detailed microarchitectural information about the dynamics of processor efficiency and throughput such as IPC, cache misses, branch mispredicts, stalls, etc. They can be used with Watchpoints to measure precise execution from point A to B of a code segments.
 |*Context + Privilege Level*
 |A high level view of execution can be captured by tracing context and privilege level changes.  These show timing of each process and time executing the OS kernel as well as low-level hardware accesses in M-mode. A pie chart can show time in each privilege level.  Waveforms can show the sequence of program and OS executions.
 |*HW Filters for Privilege, Context ID, and Exception and Interrupt Cause*
-|Filtering benefits the utilization of trace memory by recording only events that are relevant to the debugging or performance analysis task.  For example, if the developer is only interested in user-level code, then filtering out events that occur in M-mode and S-mode can save trace memory and make post-processing more efficient.  If the developer is only interested in a specific process, then filtering by context ID excludes all other processes, including the OS itself. If the user is only interested in specific exception types or interrupt causes, then the resulting display will show only relevant data. 
+|Filtering benefits the utilization of trace memory by recording only events that are relevant to the debugging or performance analysis task.  For example, if the developer is only interested in user-level code, then filtering out events that occur in M-mode and S-mode can save trace memory and make post-processing more efficient.  If the developer is only interested in a specific process, then filtering by context ID excludes all other processes, including the OS itself. If the user is only interested in specific exception types or interrupt causes, then the resulting display will show only relevant data.
 
 |*Debug trigger/watchpoints*
 |Tracing hardware trigger/watchpoints cite:[riscv-debug-spec-1.0(Sdtrig)] are useful for programming  markers without having to instrument and recompile code. They provide traces of specific locations in one's code for timing executions, counting occurrences, and especially for precisely measuring algorithic loop times, variations, and observing data-dependent behavior, such as cache misses or a function that executes in a varying amount of time based on the input data.
@@ -1152,7 +1152,7 @@ Range is 2^6 to 2^21, i.e. 64 cycles to ~2 million cycles in powers-of-2 values.
 |0
 
 |31:12
-|RESERVED | | | 
+|RESERVED | | |
 |===
 
 //== Event Trace E-Trace Messages
