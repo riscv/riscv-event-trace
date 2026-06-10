@@ -139,7 +139,7 @@ NOTE: *F-ADDR* means full or uncompressed or synchronized address. *C-ADDR* mean
 
 .Event Trace Message Fields for non-function events
 [cols="12%,10%,12%,10%,~", options="header"]
-//[%autowidth, options="header"]
+
 |===
 ^|Event ^|EVTPC ^|EVTDATA ^|ITYPE ^|Description
 
@@ -1000,7 +1000,6 @@ Event Trace supports up to 8 external signals that can be traced as events. The 
 NOTE: These fields are WARL; the value of the field is always 0 if the feature is not implemented, thus by writing 1, 2, or 3 to each field, the WARL return value indicates if the feature is implemented. The reset value is also 0 for all fields which means that by default no external signals will be traced until the user enables them.
 
 .Event Trace External Signal Control - *trTeEvtExtSigControl* (32b) 
-
 [cols="8%,25%,~,8%,8%", options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
@@ -1144,7 +1143,7 @@ NOTE: The counter is not accessible as a memory-mapped register. It is part of t
 |RESERVED | | |
 
 |11:8
-|trTeEvtPerfSelWindow [#SelectCycleWindow]
+|[#SelectCycleWindow] trTeEvtPerfSelWindow
 |Cycles interval for counting perf selector level (high) events. Interval duration selectable in powers of 2 +
  *cycles = 2^(trTeEvtPerfSelWindow + 6)* +
 Range is 2^6 to 2^21, i.e. 64 cycles to ~2 million cycles in powers-of-2 values. For a 1GHz clock, the range is 64ns to 2ms. Common for all Perf Selects.
