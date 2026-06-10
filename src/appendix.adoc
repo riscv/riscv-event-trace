@@ -106,7 +106,7 @@ For *trTeCompjControl* and *trTeCompjMatchLow* below, j=0 which defines the firs
 === Exception Cause Register Filtering
 (((Filtering, Exception Cause)))
 
-.Exception Cause (Ecause) Filtering 
+.Exception Cause (Ecause) Filtering
 [cols="30%,30%,~", options="header"]
 |===
 ^|Register ^|Register Fields ^|Description

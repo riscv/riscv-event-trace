@@ -1,5 +1,5 @@
 = RISC-V Event Trace Specification
-Authors: Bruce Ableidinger, MIPS
+Authors: Bruce Ableidinger, Global Foundries/MIPS
 include::../docs-resources/global-config.adoc[]
 :docgroup: RISC-V Event Trace Task Group
 :description: RISC-V Event Trace Specification
