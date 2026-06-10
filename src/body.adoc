@@ -999,7 +999,7 @@ Event Trace supports up to 8 external signals that can be traced as events. The 
 
 NOTE: These fields are WARL; the value of the field is always 0 if the feature is not implemented, thus by writing 1, 2, or 3 to each field, the WARL return value indicates if the feature is implemented. The reset value is also 0 for all fields which means that by default no external signals will be traced until the user enables them.
 
-.Event Trace External Signal Control - *trTeEvtExtSigControl* (32b) 
+.Event Trace External Signal Control - *trTeEvtExtSigControl* (32b)
 [cols="8%,25%,~,8%,8%", options="header"]
 |===
 ^|Bits ^|Field ^|Description ^|RW ^|Reset
