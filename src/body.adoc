@@ -89,7 +89,7 @@ Event Trace can include the option of Profiling Performance Counters (PPCs) whic
 === Event Trace Block Diagram
 (((Event Trace, block diagram)))
 
-images::EVT_block_1.svg[alt="EVT Block Diagram", width=100%, align=center]
+image::images/EVT_block_1.svg[alt="EVT Block Diagram", width=100%, align=center]
 
 === Features and Benefits (non-normative)
 (((Event Trace, features and benefits)))
