@@ -353,11 +353,11 @@ The counter is defined to be 24 bits (increments-of-6 work best for N-Trace cite
 [wavedrom, , svg]
 ....
 {signal: [
-  { name: 'clk', wave: 'pPp..|.......' },
+  { name: 'clk', wave: 'PPp..|.......' },
   { name:'mhpmevent3', wave: '01..0|.10.', node:'.a......',phase: 0.5},
-  { name:'cycles-interval', wave: "0.1...|...0",phase: 0.5, node:'..b.......c.'},
-  { name:'latch_PC+TS', wave: '0.10..|.....',phase: 0.5, node:'..d...'},
-  { name:'count', wave: '0.===.|.=.0', data: ["1", "2", "3","4"]},
+  { name:'cycles-interval', wave: "0.1..|....0",phase: 0.5, node:'..b.......c.'},
+  { name:'latch_PC+TS', wave: '0.10.|......',phase: 0.5, node:'..d...'},
+  { name:'count', wave: '0.===|....0', data: ["1", "2", "3"]},
   { name:'gen_packet', wave:'0.........10', node:'..........e.'},
   ],
   head:{
