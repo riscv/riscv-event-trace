@@ -716,7 +716,7 @@ NOTE: For the setup of *trTeEvtExceptionEn* and *trTeEvtInterruptEn*, the return
 |1 (SD)
 
 |10:7
-|[#PPCsImplemented]trTeEvtPPCsImpl
+| [[PPCsImplemented]]trTeEvtPPCsImpl
 |Number of Profiling Performance Counters implemented (0-15)
 |RO
 |8 (SD)
@@ -737,13 +737,13 @@ NOTE: For the setup of *trTeEvtExceptionEn* and *trTeEvtInterruptEn*, the return
 
 
 |13
-|[#DebugTriggerIDImpl] trTeEvtDbgTrigIDImpl
+| [[DebugTriggerIDImpl]]trTeEvtDbgTrigIDImpl 
 |Read as 1 if Debug Trigger ID is implemented in RHTI (or manually)
 |RO
 |0 (SD)
 
 |16-14
-| [#SelectorsImplemented]trTeEvtSelectorsImpl
+| [[SelectorsImplemented]]trTeEvtSelectorsImpl
 |Number of Performance Counter selectors implemented for Event Trace (0-7)
 |RO
 |0 (SD)
