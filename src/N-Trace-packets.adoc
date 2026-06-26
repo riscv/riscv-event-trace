@@ -45,7 +45,7 @@ This file (N-Trace-packets.adoc) defines the Event Trace messages that extend N-
 | RET Function Event
 
 |0x11 (17)
-| Performance Counter Recording
+| Profiling Performance Counter Recording
 
 |0x2 (2)
 |Ownership: Process Information (Context ID and Privilege Mode)
@@ -105,7 +105,7 @@ Note: EVTSRC+EVTCNT equal 1 byte of N-TRACE message output
 
 ==== Event Trace non-Function Messages, per-EVTSRC (type)
 .Event Trace Message Fields for non-function events
-[cols="12%,10%,10%,10%,10%,~", options="header"]
+[cols="12%,10%,10%,10%,11%,~", options="header"]
 |===
 ^|Event ^|EVTSRC ^|EVTCNT ^|EVTPC ^|EVTDATA ^|Description
 
@@ -510,14 +510,14 @@ This message is generally output immediately after an event message when PPCs ar
 
 The number of PPCs implemented is defined in the control register *trTeEvtFeatures.trTeEvtPPCsImpl* <<PPCsImplemented>>. The number of PPCs to actively record per message is defined by the control register *trTePPCEnables.trTeEvtPPCNumTrace* <<PPCsToTrace>>. (Hardware must make sure that the number of PPCs to record does not exceed the number of PPCs implemented.) Thus this message can output a variable number of counters.  The N-Trace message format defines the end of a message. cite:[riscv-N-Trace-spec-1.0(Ch. MSEO Sequences)]
 
-.Performance Counter Recording
+.Profiling Performance Counter Recording
 [cols="10%,20%,~", options="header"]
 |===
 |Bits |Field |Description
 
 |*6*
 |*TCODE*
-|*Value = 0x2A (43)*
+|*Value = 0x11 (17)*
 
 |cfg
 |SRC
